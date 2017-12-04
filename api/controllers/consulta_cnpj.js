@@ -18,14 +18,11 @@ exports.getCNPJ = function*(req, res, next) {
     };
 
     Empresa.findOrCreate(query, function (err, model) {
-        if (model.empresa[0].ultima_atualizacao !== null) {
-            model.users.splice(0, 1);
+        if (model.ultima_atualizacao !== null) {
+            res.json(model);
         } else {
-            model.users.splice(1, 1);
-            anticaptcha_util.get
+            //anticaptcha_util.get
         }
-        // created will be true here
-        res.json(model);
     });
 
 
