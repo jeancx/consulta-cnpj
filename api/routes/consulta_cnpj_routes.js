@@ -4,11 +4,11 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 // controllers
-const captcha = require('../controllers/consulta_cnpj');
+const consulta_cnpj = require('../controllers/consulta_cnpj');
 
 // ROUTES -----------------------------------------------------
 
 // POST
-router.post('/', jsonParser, captcha.solve);
+router.post('/:cnpj', jsonParser, consulta_cnpj.getCNPJ);
 
 module.exports = router;

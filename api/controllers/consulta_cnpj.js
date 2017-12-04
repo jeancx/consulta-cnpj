@@ -11,7 +11,7 @@ const Empresa = require('../models/empresa');
 
 
 // get all
-exports.getCNPJ = function*(req, res, next) {
+exports.getCNPJ = function(req, res, next) {
 
     const query = {
         cnpj: req.params.cnpj

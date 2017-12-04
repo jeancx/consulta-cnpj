@@ -15,8 +15,8 @@ module.exports = function (app) {
     const apiRoutes = express.Router();
 
     // ADMINISTRATOR ROUTES
-    const administratorRoutes = require('./captcha_routes');
-    apiRoutes.use('/captcha', administratorRoutes);
+    const consultaCnpjRouter = require('./consulta_cnpj_routes');
+    apiRoutes.use('/consulta_cnpj', consultaCnpjRouter);
 
     // apply the routes to our application with the prefix /api
     app.use('/api', apiRoutes);
