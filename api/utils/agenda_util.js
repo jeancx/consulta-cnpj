@@ -1,3 +1,5 @@
+'use strict';
+
 const mongo_url = process.env.MONGO_URL || 'mongodb://localhost/consulta_cnpj';
 
 //https://github.com/agenda/agenda

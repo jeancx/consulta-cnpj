@@ -1,4 +1,6 @@
-var Anticaptcha = function (clientKey) {
+'use strict';
+
+const Anticaptcha = function (clientKey) {
     return new function (clientKey) {
         this.params = {
             host: 'api.anti-captcha.com',

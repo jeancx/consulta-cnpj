@@ -1,7 +1,9 @@
+'use strict';
+
 require('dotenv').config({path: './.env'});
 const api_key = process.env.ANTI_CAPTCHA_API_KEY; 				// set the port
 
-var anticaptcha = require('./anticaptcha')(api_key);
+var anticaptcha = require('../vendor/anticaptcha')(api_key);
 
 exports.solveImage = function (image) {
 
@@ -14,6 +16,8 @@ exports.solveImage = function (image) {
         // captcha params can be set here
         anticaptcha.setMinLength(6);
         console.time("AntiCaptcha");
+
+        console.log(balance);
 
         if (balance > 0) {
             anticaptcha.createImageToTextTask({
@@ -45,11 +49,11 @@ exports.solveImage = function (image) {
 };
 
 
-exports.solveReacptcha = function () {
+exports.solveReacptcha = function (sitekey, callback) {
 
     //recaptcha key from target website
     anticaptcha.setWebsiteURL("http://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/cnpjreva_solicitacao2.asp");
-    anticaptcha.setWebsiteKey("6LcT2zQUAAAAABRp8qIQR2R0Y2LWYTafR0A8WFbr");
+    anticaptcha.setWebsiteKey(sitekey);
 
     //browser header parameters
     anticaptcha.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116");
@@ -80,9 +84,10 @@ exports.solveReacptcha = function () {
                     }
                     console.log(taskSolution);
                     console.timeEnd("AntiCaptcha");
+                    callback(taskSolution);
                 });
             });
         }
     });
 
-}
+};

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const findOrCreate = require('mongoose-findorcreate');
 
 const empresaSchema = new mongoose.Schema({
     cnpj: {
@@ -54,6 +55,8 @@ const empresaSchema = new mongoose.Schema({
     capital_social: Number,
     extra: {}
 });
+
+empresaSchema.plugin(findOrCreate);
 
 // set up a mongoose model and pass it using module.exports
 module.exports = mongoose.model('Empresa', empresaSchema);

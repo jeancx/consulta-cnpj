@@ -29,7 +29,7 @@ const accessLogStream = rfs('access.log', {
     path: logDirectory
 });
 // setup the logger
-app.use(morgan('combined', {stream: accessLogStream}))
+app.use(morgan('combined', {stream: accessLogStream}));
 
 
 //CONNECTION ===================================================================

@@ -8,7 +8,8 @@ const consulta_cnpj = require('../controllers/consulta_cnpj');
 
 // ROUTES -----------------------------------------------------
 
-// POST
-router.post('/:cnpj', jsonParser, consulta_cnpj.getCNPJ);
+// GET
+router.get('/:cnpj', jsonParser, consulta_cnpj.getCNPJ);
+router.get('/:cnpj/atualiza', jsonParser, consulta_cnpj.getUpdateCNPJ);
 
 module.exports = router;
