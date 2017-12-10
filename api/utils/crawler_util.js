@@ -3,15 +3,6 @@ const request = require('request');
 const cheerio = require('cheerio');
 const URL = require('url-parse');
 
-const START_URL = "http://www.arstechnica.com";
-const SEARCH_WORD = "stemming";
-const MAX_PAGES_TO_VISIT = 10;
-
-const numPagesVisited = 0;
-const pagesToVisit = [];
-const url = new URL(START_URL);
-const baseUrl = url.protocol + "//" + url.hostname;
-
 exports.getPage = function (url, callback) {
     const options = {
         url: url,
