@@ -21,45 +21,46 @@ exports.getCNPJ = function (req, res, next) {
     //encontra ou Cria
     Empresa.findOrCreate(query, function (err, doc) {
 
+        if (err) {
+            return res.send();
+        }
+
         //se tiver data traz o resultado
         if (doc.ultima_atualizacao) {
             res.json(doc);
-        } else { //se não tiver data pega os dados atulizados com Crawler / Anticaptcha
-            //pega os dados numa thread e atualiza no banco
-            //retorna os dados do receitaws para rápida resposta
-        }
+        } else {
+            https.get('https://www.receitaws.com.br/v1/cnpj/' + req.params.cnpj, function (resp) {
+                var data = '';
 
-        https.get('https://www.receitaws.com.br/v1/cnpj/' + req.params.cnpj, function (resp) {
-            var data = '';
+                // A chunk of data has been recieved.
+                resp.on('data', function (chunk) {
+                    data += chunk;
+                });
 
-            // A chunk of data has been recieved.
-            resp.on('data', function (chunk) {
-                data += chunk;
-            });
+                // The whole response has been received. Print out the result.
+                resp.on('end', function () {
 
-            // The whole response has been received. Print out the result.
-            resp.on('end', function () {
+                    var json = JSON.parse(data);
 
-                var json = JSON.parse(data);
-
-                if(json.status === 'OK'){
-                    //update all fields
-                    for (var field in Empresa.schema.paths) {
-                        if ((field !== '_id') && (field !== '__v') && (field !== 'cnpj')) {
-                            if (json[field] !== undefined) {
-                                doc[field] = json[field];
+                    if (json.status === 'OK') {
+                        //update all fields
+                        for (var field in Empresa.schema.paths) {
+                            if ((field !== '_id') && (field !== '__v') && (field !== 'cnpj')) {
+                                if (json[field] !== undefined) {
+                                    doc[field] = json[field];
+                                }
                             }
                         }
+                        doc.save();
+                        res.json(json);
                     }
-                    doc.save();
-                    res.json(json);
-                }
-                res.json({'response':'não encontrado'});
-            });
+                    res.json({'response': 'não encontrado'});
+                });
 
-        }).on("error", function (err) {
-            console.log("Error: " + err.message);
-        });
+            }).on("error", function (err) {
+                console.log("Error: " + err.message);
+            });
+        }
     });
 
 };
