@@ -44,7 +44,7 @@ exports.getCNPJ = function (req, res, next) {
 
                 //update all fields
                 for (var field in Empresa.schema.paths) {
-                    if ((field !== '_id') && (field !== '__v')) {
+                    if ((field !== '_id') && (field !== '__v') && (field !== 'cnpj')) {
                         if (json[field] !== undefined) {
                             doc[field] = json[field];
                         }
