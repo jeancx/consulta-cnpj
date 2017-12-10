@@ -43,7 +43,6 @@ exports.getCNPJ = function (req, res, next) {
                 var json = JSON.parse(data);
 
                 if(json.status === 'OK'){
-
                     //update all fields
                     for (var field in Empresa.schema.paths) {
                         if ((field !== '_id') && (field !== '__v') && (field !== 'cnpj')) {
@@ -53,9 +52,9 @@ exports.getCNPJ = function (req, res, next) {
                         }
                     }
                     doc.save();
-
                     res.json(json);
                 }
+                res.json({'response':'não encontrado'});
             });
 
         }).on("error", function (err) {
