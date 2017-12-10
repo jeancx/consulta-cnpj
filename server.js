@@ -5,7 +5,7 @@ const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config({path: './.env'});
 const port = process.env.PORT || 3000;
-const mongo_url = process.env.MONGO_URL || 'mongodb://localhost/consulta_cnpj';
+const mongo_url = process.env.MONGODB_URI || 'mongodb://localhost/consulta_cnpj';
 const morgan = require('morgan');
 const path = require('path');
 const rfs = require('rotating-file-stream');
