@@ -1,24 +1,21 @@
 const querystring = require('querystring');
 const request = require('request');
 const cheerio = require('cheerio');
-const URL = require('url-parse');
 
 exports.getPage = function (url, callback) {
-    const options = {
-        url: url,
-        method: 'GET'
-    };
     console.log("Visiting page " + url);
-    request.get(url, function (error, response, body) {
+    request.get(url, function (error, resp, body) {
+        //console.log(resp);
         // Check status code (200 is HTTP OK)
-        console.log("Status code: " + response.statusCode);
-        if (response.statusCode !== 200) {
+        console.log("Status code: " + resp.statusCode);
+        console.log("Status code: " + resp.headers);
+        if (resp.statusCode !== 200) {
             callback();
             return;
         }
         // Parse the document body
         const $ = cheerio.load(body);
-        callback($);
+        callback($, resp.headers);
     });
 };
 
@@ -46,14 +43,11 @@ exports.postPage = function (url, params, callback) {
         method: 'POST'
     }, function (err, res, body) {
         // Check status code (200 is HTTP OK)
-        headers = res.headers;
-        console.log("Headers: " + JSON.stringify(headers));
+        console.log("Headers: " + JSON.stringify(res.headers));
         console.log("Status code: " + res.statusCode);
-
         if (res.statusCode === 302) {
-            console.log(res.statusCode);
             request({
-                headers: headers,
+                //headers: res.headers,
                 uri: 'https://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/Cnpjreva_Comprovante.asp',
                 method: 'GET'
             }, function (e, r, body) {
@@ -68,9 +62,42 @@ exports.postPage = function (url, params, callback) {
             const $ = cheerio.load(body);
             callback(body);
         }
+    });
 
+};
 
+exports.postPageSonoro = function (url, params, headers, callback) {
 
+    var formData = querystring.stringify(params);
+    var contentLength = formData.length;
+
+    console.log("Visiting page " + url);
+
+    request({
+        headers: headers,
+        uri: url,
+        body: formData,
+        method: 'POST'
+    }, function (err, res, body) {
+        // Check status code (200 is HTTP OK)
+        console.log("Status code: " + res.statusCode);
+        if (res.statusCode === 302) {
+            request({
+                //headers: res.headers,
+                uri: 'https://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/Cnpjreva_Comprovante.asp',
+                method: 'GET'
+            }, function (e, r, body) {
+                console.log("Headers: " + JSON.stringify(body));
+                // Parse the document body
+                const $ = cheerio.load(body);
+                callback(body);
+            });
+
+        } else if (res.statusCode === 200) {
+            // Parse the document body
+            const $ = cheerio.load(body);
+            callback(body);
+        }
     });
 
 };

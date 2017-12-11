@@ -15,7 +15,6 @@ exports.solveImage = function (image) {
 
         // captcha params can be set here
         anticaptcha.setMinLength(6);
-        console.time("AntiCaptcha");
 
         console.log(balance);
 
@@ -39,7 +38,7 @@ exports.solveImage = function (image) {
                         }
 
                         console.log(taskSolution);
-                        console.timeEnd("AntiCaptcha");
+                        return taskSolution;
                     });
                 }
             );
@@ -67,8 +66,6 @@ exports.solveReacptcha = function (sitekey, callback) {
 
         if (balance > 0) {
 
-            console.time("AntiCaptcha");
-
             anticaptcha.createTaskProxyless(function (err, taskId) {
                 if (err) {
                     console.error(err);
@@ -83,7 +80,6 @@ exports.solveReacptcha = function (sitekey, callback) {
                         return;
                     }
                     console.log(taskSolution);
-                    console.timeEnd("AntiCaptcha");
                     callback(taskSolution);
                 });
             });
