@@ -80,24 +80,17 @@ exports.postPageSonoro = function (url, params, headers, callback) {
         method: 'POST'
     }, function (err, res, body) {
         // Check status code (200 is HTTP OK)
-        console.log("Status code: " + res.statusCode);
-        if (res.statusCode === 302) {
-            request({
-                //headers: res.headers,
-                uri: 'https://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/Cnpjreva_Comprovante.asp',
-                method: 'GET'
-            }, function (e, r, body) {
-                console.log("Headers: " + JSON.stringify(body));
-                // Parse the document body
-                const $ = cheerio.load(body);
-                callback(body);
-            });
-
-        } else if (res.statusCode === 200) {
-            // Parse the document body
-            const $ = cheerio.load(body);
-            callback(body);
-        }
+        console.log("Body: " + JSON.stringify(body));
+        // request({
+        //     //headers: res.headers,
+        //     uri: 'https://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/Cnpjreva_Comprovante.asp',
+        //     method: 'GET'
+        // }, function (e, r, body) {
+        //     console.log("Headers: " + JSON.stringify(body));
+        //     // Parse the document body
+        //     const $ = cheerio.load(body);
+        //     callback(body);
+        // });
     });
 
 };

@@ -5,7 +5,7 @@ const api_key = process.env.ANTI_CAPTCHA_API_KEY; 				// set the port
 
 var anticaptcha = require('../vendor/anticaptcha')(api_key);
 
-exports.solveImage = function (image) {
+exports.solveImage = function (image, callback) {
 
     anticaptcha.getBalance(function (err, balance) {
         if (err) {
@@ -36,9 +36,7 @@ exports.solveImage = function (image) {
                             console.error(err);
                             return;
                         }
-
-                        console.log(taskSolution);
-                        return taskSolution;
+                        callback(taskSolution);
                     });
                 }
             );
@@ -79,7 +77,6 @@ exports.solveReacptcha = function (sitekey, callback) {
                         console.error(err);
                         return;
                     }
-                    console.log(taskSolution);
                     callback(taskSolution);
                 });
             });
